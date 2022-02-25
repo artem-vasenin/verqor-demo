@@ -1,0 +1,16 @@
+.layout {
+  height: 100%;
+}
+
+.header {
+  color: white;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 0 50px;
+}
+
+.footer {
+  border-top: 1px solid #bbb;
+}
