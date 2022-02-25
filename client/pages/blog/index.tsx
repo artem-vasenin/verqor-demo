@@ -1,10 +1,16 @@
-import MainLayout from '../../components/layouts/MainLayout';
 import Head from 'next/head';
-import { Col, Row, Typography, List, Skeleton } from 'antd';
 import Link from 'next/link';
+import { Col, Row, Typography, List, Skeleton, Empty } from 'antd';
 
-const Blog = () => {
+import { IPost } from 'types/interfaces';
+import blogService from '../../services/blog.service';
+import MainLayout from '../../components/layouts/MainLayout';
+import { FC } from 'react';
+
+const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
   const { Title } = Typography;
+
+  console.log(posts);
 
   return (
     <MainLayout>
@@ -18,20 +24,35 @@ const Blog = () => {
             <Title level={1}>Blog</Title>
           </Typography>
 
-          <List>
-            <List.Item>
-              <Skeleton title={false} loading={false} active>
-                <List.Item.Meta
-                  title={<Link href="/"><a>Some publication title</a></Link>}
-                  description="Ant Design, a design language for background applications"
-                />
-              </Skeleton>
-            </List.Item>
-          </List>
+          {
+            posts && posts.length ? (
+              <List>
+                {
+                  posts.map((post: IPost) => (
+                    <List.Item>
+                      <Skeleton title={false} loading={false} active>
+                        <List.Item.Meta
+                          title={<Link href={`/blog/${post.id}`}><a>{post.title}</a></Link>}
+                          description={post.description}
+                        />
+                      </Skeleton>
+                    </List.Item>
+                  ))
+                }
+              </List>
+            ) : (
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            )
+          }
         </Col>
       </Row>
     </MainLayout>
   );
 };
+
+export async function getStaticProps() {
+  const posts: IPost[] = await blogService.getList();
+  return { props: { posts } };
+}
 
 export default Blog;
