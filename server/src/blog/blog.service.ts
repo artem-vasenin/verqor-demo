@@ -10,7 +10,25 @@ export class BlogService {
 
   /** Get all posts service */
   getAllPosts() {
-    return this.prismaService.post.findMany({include: { comments: true }});
+    return this.prismaService.post.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        createdAt: true,
+        comments: {
+          select: {
+            id: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
   }
 
   /**
@@ -18,7 +36,22 @@ export class BlogService {
    * @param id - identifier
    */
   getPostById(id: number) {
-    return this.prismaService.post.findFirst({ where: { id }, include: { comments: true }});
+    return this.prismaService.post.findFirst({
+      where: { id },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        body: true,
+        createdAt: true,
+        updatedAt: true,
+        comments: {
+          orderBy: {
+            createdAt: 'desc',
+          }
+        }
+      }
+    });
   }
 
   /**
