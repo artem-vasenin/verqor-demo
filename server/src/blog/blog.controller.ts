@@ -1,7 +1,8 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { BlogService } from 'src/blog/blog.service';
+import { CreatePostDto } from 'src/blog/dto/create-post.dto';
 
 @ApiTags('blog')
 @Controller('blog')
@@ -16,14 +17,14 @@ export class BlogController {
 
   @ApiOperation({ summary: 'Get post details by ID' })
   @Get(':id')
-  getPostById() {
-    return this.blogService.getPostById();
+  getPostById(@Param('id') id: string) {
+    return this.blogService.getPostById(+id);
   }
 
   @ApiOperation({ summary: 'Create new post' })
   @Post()
-  createPost() {
-    return this.blogService.createPost();
+  createPost(@Body() dto: CreatePostDto) {
+    return this.blogService.createPost(dto);
   }
 
   @ApiOperation({ summary: 'Add new comment for selected post' })
