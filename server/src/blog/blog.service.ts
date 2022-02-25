@@ -10,7 +10,7 @@ export class BlogService {
 
   /** Get all posts service */
   getAllPosts() {
-    return this.prismaService.post.findMany();
+    return this.prismaService.post.findMany({include: { comments: true }});
   }
 
   /**
