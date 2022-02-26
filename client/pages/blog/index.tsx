@@ -13,6 +13,7 @@ import ShowPostList from '../../components/blog/list/ShowPostList';
 
 const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
   const { Title } = Typography;
+  const [postsList, setPostsList] = useState<IPost[]>(posts);
   const [editablePost, setEditablePost] = useState<IPost | null>(null);
   const [isShowPostCreateModal, setIsShowPostCreateModal] = useState(false);
   const [isShowPostEditModal, setIsShowPostEditModal] = useState(false);
@@ -27,8 +28,14 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
    * Get data and create new post
    * @param post - post`s data
    */
-  const handlePostCreate = (post: IPostCreate) => {
-    console.log('handlePostCreate', post);
+  const handlePostCreate = async (post: IPostCreate) => {
+    try {
+      const newPost: IPost = await blogService.createPost(post);
+      setPostsList([...postsList, newPost]);
+      message.success(`Post "${newPost.title}" is created`);
+    } catch (e) {
+      message.error('Post is not created');
+    }
   }
 
   /** Cancel create form and close modal */
@@ -68,6 +75,7 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
   const onPostDelete = async (id: number) => {
     try {
       const post: IPost = await blogService.deletePost(id);
+      setPostsList(postsList.filter((post: IPost) => post.id !== id))
       message.success(`Post "${post.title}" is deleted`);
     } catch (e) {
       message.error('Post is not deleted');
@@ -98,9 +106,9 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
           </Typography>
 
           {
-            posts && posts.length ? (
+            postsList && postsList.length ? (
               <ShowPostList
-                posts={posts}
+                posts={postsList}
                 onEdit={showPostEditModalHandler}
                 onDelete={onPostDelete}
               />
