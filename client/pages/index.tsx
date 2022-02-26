@@ -3,7 +3,7 @@ import { Typography, Divider, Row, Col } from 'antd';
 
 import MainLayout from '../components/layouts/MainLayout'
 
-import styles from '../styles/Home.module.scss'
+import classes from '../styles/Home.module.scss'
 
 export default function Home() {
   const { Title, Paragraph, Text } = Typography;
@@ -17,7 +17,9 @@ export default function Home() {
       <Row>
         <Col span={24}>
           <Typography>
-            <Title level={1}>Full stack task</Title>
+            <div className={classes.heading}>
+              <Title level={1}>Full stack task</Title>
+            </div>
 
             <Paragraph>
               Приложение блога. Язык: TypeScript.<br/>

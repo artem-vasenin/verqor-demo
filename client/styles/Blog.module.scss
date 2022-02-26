@@ -1,0 +1,15 @@
+.heading {
+  padding-top: 20px;
+  padding-right: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list {
+  &__item {}
+
+  &__skeleton {}
+
+  &__meta {}
+}

@@ -13,8 +13,8 @@ const MainLayout:FC<{children: any}> = ({ children }) => {
    * Menu router
    * @param e - menu info event
    */
-  const handleClick = (e: MenuInfo) => {
-    router.push(e.key);
+  const handleClick = async (e: MenuInfo): Promise<void> => {
+    await router.push(e.key);
   }
 
   return (
