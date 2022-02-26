@@ -64,13 +64,13 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
    * @param post - post`s data
    */
   const showPostEditModalHandler = (post: IPost) => {
-    console.log('showPostEditModalHandler', post);
     setEditablePost(post);
     setIsShowPostEditModal(true);
   }
 
   /** Cancel edit form and close modal */
   const handlePostEditCancel = () => {
+    setEditablePost(null);
     setIsShowPostEditModal(false);
   }
 

@@ -77,7 +77,21 @@ export class BlogService {
    * @param dto - create post dto
    */
   updatePost(id: number, dto: CreatePostDto) {
-    return this.prismaService.post.update({ where: { id }, data: { ...dto } });
+    return this.prismaService.post.update({
+      where: { id },
+      data: { ...dto },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        body: true,
+        createdAt: true,
+        updatedAt: true,
+        comments: {
+          select: { id: true }
+        }
+      }
+    });
   }
 
   /**

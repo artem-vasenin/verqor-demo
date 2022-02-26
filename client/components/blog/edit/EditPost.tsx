@@ -13,21 +13,20 @@ interface IProps {
 const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel }) => {
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<IPostEdit | null>(null);
+  const [formFields, setFormFields] = useState<IFormField[]>([]);
   const validateMessages = {
     required: '${label} is required!',
   };
 
   /** Selected post values */
-  const setInitialValues = (): IFormField[] => {
-    return post ? [
+  const setInitialValues = (): void => {
+    const fields = post ? [
       { name: 'title', value: post.title },
       { name: 'description', value: post.description },
       { name: 'body', value: post.body }
     ] : [];
+    setFormFields(fields);
   };
-
-  /** Save initial values into ref (not needed re rendering) */
-  const initialFieldsValues = useRef(setInitialValues());
 
   /** Submit */
   const handlePostEdit = () => {
@@ -52,11 +51,12 @@ const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel }) => {
     onChancel();
   }
 
-  // useEffect(() => {
-  //   if (post) {
-  //     initialFieldsValues.current = setInitialValues();
-  //   }
-  // }, [post]);
+  useEffect(() => {
+    if (post) {
+      setFormValues(post);
+      setInitialValues();
+    }
+  }, [post]);
 
   return post ? (
     <div>
@@ -71,7 +71,7 @@ const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel }) => {
           layout="vertical"
           name="nest-messages"
           onValuesChange={onValuesChange}
-          fields={initialFieldsValues.current}
+          fields={formFields}
           validateMessages={validateMessages}
           onFinish={handlePostEdit}
         >

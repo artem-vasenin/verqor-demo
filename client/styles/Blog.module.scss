@@ -11,6 +11,11 @@
     padding-top: 34px;
     padding-left: 8px;
     background-color: white;
+
+    @media all and (max-width: 600px) {
+      flex-direction: column;
+      align-items: initial;
+    }
   }
 
   &__skeleton {}

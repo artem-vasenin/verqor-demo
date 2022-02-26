@@ -7,3 +7,10 @@
     border-bottom-color: #ddd;
   }
 }
+
+.ant-list-item-meta-content {
+  @media all and (max-width: 600px) {
+    width: initial;
+    padding-bottom: 20px;
+  }
+}
