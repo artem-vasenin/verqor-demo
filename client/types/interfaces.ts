@@ -25,3 +25,8 @@ export interface IPostCreate {
 export interface IPostEdit extends IPostCreate {
   id: number;
 }
+
+export interface IFormField {
+  name: string;
+  value: string;
+}

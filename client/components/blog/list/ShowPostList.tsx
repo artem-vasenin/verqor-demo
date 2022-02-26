@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import { Button, List, Skeleton, Tooltip } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Badge, Button, List, Skeleton, Tag, Tooltip } from 'antd';
+import { CommentOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import classes from '../../../styles/Blog.module.scss';
 import { IPost } from '../../../types/interfaces';
@@ -12,15 +12,26 @@ interface IProps {
   onDelete: (id: number) => void;
 }
 
-const ShowPostList: FC<IProps> = ({ posts , onEdit, onDelete }) => {
-  return (
-    <List className={classes.list}>
-      {
-        posts.map((post: IPost) => (
+const ShowPostList: FC<IProps> = ({ posts , onEdit, onDelete }) => (
+  <List className={classes.list}>
+    {
+      posts.map((post: IPost) => (
+        <Badge.Ribbon
+          text={post.createdAt.split('T')[0]}
+          key={post.id}
+          placement="start"
+        >
           <List.Item
             className={classes.list__item}
-            key={post.id}
             actions={[
+              <Tooltip placement="top" title="Comments" color="blue">
+                <Tag
+                  icon={<CommentOutlined />}
+                  color={post.comments.length ? "processing" : "default"}
+                >
+                  {post.comments.length}
+                </Tag>
+              </Tooltip>,
               <Tooltip placement="top" title="Edit post" color="blue">
                 <Button
                   type="primary"
@@ -58,10 +69,10 @@ const ShowPostList: FC<IProps> = ({ posts , onEdit, onDelete }) => {
               />
             </Skeleton>
           </List.Item>
-        ))
-      }
-    </List>
-  );
-};
+        </Badge.Ribbon>
+      ))
+    }
+  </List>
+);
 
 export default ShowPostList;

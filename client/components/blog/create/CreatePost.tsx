@@ -12,20 +12,29 @@ interface IProps {
 const CreatePost: FC<IProps> = ({ show, onCreate, onChancel }) => {
   const [formValues, setFormValues] = useState<IPostCreate | null>(null);
   const [form] = Form.useForm();
-  const validateMessages = {
-    required: '${label} is required!',
-  };
+  const validateMessages = { required: '${label} is required!' };
 
+  /** Submit form */
   const handlePostCreate = () => {
     if (formValues) {
       formValues && onCreate(formValues);
-      form.resetFields();
-      onChancel();
+      onClose();
     }
   }
 
+  /**
+   * Set form values
+   * @param _ - field value
+   * @param values - all fields` values
+   */
   const onValuesChange = (_: any, values: IPostCreate) => {
     setFormValues(values);
+  }
+
+  /** Close modal and clear form */
+  const onClose = () => {
+    form.resetFields();
+    onChancel();
   }
 
   return (
@@ -34,7 +43,7 @@ const CreatePost: FC<IProps> = ({ show, onCreate, onChancel }) => {
         title="Create new post"
         visible={show}
         footer={null}
-        onCancel={onChancel}
+        onCancel={onClose}
       >
         <Form
           form={ form }

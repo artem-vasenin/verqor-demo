@@ -20,7 +20,6 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
 
   /** Show modal form for create new post */
   const showCreateModalHandler = () => {
-    console.log('showCreateModalHandler');
     setIsShowPostCreateModal(true);
   }
 
@@ -40,7 +39,6 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
 
   /** Cancel create form and close modal */
   const handlePostCreateCancel = () => {
-    console.log('handlePostCreateCancel');
     setIsShowPostCreateModal(false);
   }
 
@@ -48,8 +46,17 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
    * Get data and edit post
    * @param post - post`s data
    */
-  const handlePostEdit = (post: IPostEdit) => {
-    console.log('handlePostEdit', post);
+  const handlePostEdit = async (post: IPostEdit) => {
+    try {
+      const newPost: IPost = await blogService.updatePost(post);
+      const updatedPosts = [...postsList].map((item: IPost) => {
+        return item.id === newPost.id ? newPost : item;
+      })
+      setPostsList(updatedPosts);
+      message.success(`Post "${newPost.title}" is updated`);
+    } catch (e) {
+      message.error('Post is not updated');
+    }
   }
 
   /**
@@ -64,7 +71,6 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
 
   /** Cancel edit form and close modal */
   const handlePostEditCancel = () => {
-    console.log('handlePostEditCancel');
     setIsShowPostEditModal(false);
   }
 

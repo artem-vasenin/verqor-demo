@@ -15,6 +15,7 @@ export class BlogService {
         id: true,
         title: true,
         description: true,
+        body: true,
         createdAt: true,
         comments: {
           select: {

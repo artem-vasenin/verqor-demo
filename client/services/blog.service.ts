@@ -1,4 +1,4 @@
-import { IPost, IPostCreate } from '../types/interfaces';
+import { IPost, IPostCreate, IPostEdit } from '../types/interfaces';
 
 class BlogService {
   private url = `${process.env.NEXT_PUBLIC_API_URL}blog`;
@@ -16,6 +16,20 @@ class BlogService {
   async createPost(post: IPostCreate): Promise<IPost> {
     const response = await fetch(this.url, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(post),
+    });
+    return response.json();
+  }
+
+  /**
+   * Edit selected post
+   * @param post - post`s data
+   */
+  async updatePost(post: IPostEdit): Promise<IPost> {
+    console.log('service', post);
+    const response = await fetch(`${this.url}/${post.id}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(post),
     });
