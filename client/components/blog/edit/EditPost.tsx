@@ -1,31 +1,34 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { Modal } from 'antd';
 
-const EditPost = () => {
-  const [showEditModal, setShowEditModal] = useState(false);
+import { IPost, IPostEdit } from '../../../types/interfaces';
 
+interface IProps {
+  show: boolean;
+  post: IPost | null;
+  onEdit: (post: IPostEdit) => void;
+  onChancel: () => void;
+}
+
+const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel }) => {
   const handlePostEdit = () => {
-
+    console.log('modal edit - handlePostEdit');
   }
 
-  const hideEditModal = () => {
-
-  }
-
-  return (
+  return post ? (
     <div>
       <Modal
         title="Edit Modal"
-        visible={showEditModal}
+        visible={show}
         onOk={handlePostEdit}
-        onCancel={hideEditModal}
+        onCancel={onChancel}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <p>{post.title}</p>
+        <p>{post.description}</p>
+        <p>{post.body}</p>
       </Modal>
     </div>
-  );
+  ) : null;
 };
 
 export default EditPost;

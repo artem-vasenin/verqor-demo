@@ -1,28 +1,29 @@
 import { Modal } from 'antd';
-import { useState } from 'react';
+import { FC } from 'react';
+import { IPostCreate } from '../../../types/interfaces';
 
-const CreatePost = () => {
-  const [showEditModal, setShowEditModal] = useState(false);
+interface IProps {
+  show: boolean;
+  onCreate: (post: IPostCreate) => void;
+  onChancel: () => void;
+}
 
-  const handlePostEdit = () => {
-
-  }
-
-  const hideEditModal = () => {
-
+const CreatePost: FC<IProps> = ({ show, onCreate, onChancel }) => {
+  const handlePostCreate = () => {
+    console.log('create modal - handlePostCreate');
   }
 
   return (
     <div>
       <Modal
         title="Edit Modal"
-        visible={showEditModal}
-        onOk={handlePostEdit}
-        onCancel={hideEditModal}
+        visible={show}
+        onOk={handlePostCreate}
+        onCancel={onChancel}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <p>...</p>
+        <p>...</p>
+        <p>...</p>
       </Modal>
     </div>
   );

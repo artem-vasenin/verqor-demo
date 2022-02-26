@@ -1,18 +1,73 @@
 import { FC, useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Col, Row, Typography, List, Skeleton, Empty, Button, Tooltip, Modal } from 'antd';
 
-import { IPost } from '../../types/interfaces';
+import { IPost, IPostCreate, IPostEdit } from '../../types/interfaces';
 import blogService from '../../services/blog.service';
 import MainLayout from '../../components/layouts/MainLayout';
 import classes from '../../styles/Blog.module.scss';
 import CreatePost from '../../components/blog/create/CreatePost';
 import EditPost from '../../components/blog/edit/EditPost';
+import ShowPostList from '../../components/blog/list/ShowPostList';
 
 const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
   const { Title } = Typography;
+  const [editablePost, setEditablePost] = useState<IPost | null>(null);
+  const [isShowPostCreateModal, setIsShowPostCreateModal] = useState(false);
+  const [isShowPostEditModal, setIsShowPostEditModal] = useState(false);
+
+  /** Show modal form for create new post */
+  const showCreateModalHandler = () => {
+    console.log('showCreateModalHandler');
+    setIsShowPostCreateModal(true);
+  }
+
+  /**
+   * Get data and create new post
+   * @param post - post`s data
+   */
+  const handlePostCreate = (post: IPostCreate) => {
+    console.log('handlePostCreate', post);
+  }
+
+  /** Cancel create form and close modal */
+  const handlePostCreateCancel = () => {
+    console.log('handlePostCreateCancel');
+    setIsShowPostCreateModal(false);
+  }
+
+  /**
+   * Get data and edit post
+   * @param post - post`s data
+   */
+  const handlePostEdit = (post: IPostEdit) => {
+    console.log('handlePostEdit', post);
+  }
+
+  /**
+   * Get current post and open edit post`s modal
+   * @param post - post`s data
+   */
+  const showPostEditModalHandler = (post: IPost) => {
+    console.log('showPostEditModalHandler', post);
+    setEditablePost(post);
+    setIsShowPostEditModal(true);
+  }
+
+  /** Cancel edit form and close modal */
+  const handlePostEditCancel = () => {
+    console.log('handlePostEditCancel');
+    setIsShowPostEditModal(false);
+  }
+
+  /**
+   * Delete selected post
+   * @param id - post`s identifier
+   */
+  const onPostDelete = (id: number) => {
+    console.log('onPostDelete', id);
+  }
 
   return (
     <MainLayout>
@@ -26,48 +81,24 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
             <div className={classes.heading}>
               <Title level={1}>Blog</Title>
               <Tooltip placement="top" title="Add new post" color="blue">
-                <Button type="primary" shape="circle" icon={<PlusOutlined />} size="small" />
+                <Button
+                  type="primary"
+                  shape="circle"
+                  icon={<PlusOutlined />}
+                  size="small"
+                  onClick={showCreateModalHandler}
+                />
               </Tooltip>
             </div>
           </Typography>
 
           {
             posts && posts.length ? (
-              <List className={classes.list}>
-                {
-                  posts.map((post: IPost) => (
-                    <List.Item
-                      className={classes.list__item}
-                      key={post.id}
-                      actions={[
-                        <Tooltip placement="top" title="Edit post" color="blue">
-                          <Button type="primary" shape="circle" icon={<EditOutlined />} size="small" />
-                        </Tooltip>,
-                        <Tooltip placement="top" title="Delete post" color="red">
-                          <Button danger shape="circle" icon={<DeleteOutlined />} size="small" />
-                        </Tooltip>,
-                      ]}
-                    >
-                      <Skeleton
-                        title={false}
-                        loading={false}
-                        active
-                        className={classes.list__skeleton}
-                      >
-                        <List.Item.Meta
-                          title={
-                            <Link href={`/blog/${post.id}`}>
-                              <a>{post.title}</a>
-                            </Link>
-                          }
-                          description={post.description}
-                          className={classes.list__meta}
-                        />
-                      </Skeleton>
-                    </List.Item>
-                  ))
-                }
-              </List>
+              <ShowPostList
+                posts={posts}
+                onEdit={showPostEditModalHandler}
+                onDelete={onPostDelete}
+              />
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             )
@@ -75,9 +106,18 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
         </Col>
       </Row>
 
-      <CreatePost />
+      <CreatePost
+        show={isShowPostCreateModal}
+        onCreate={handlePostCreate}
+        onChancel={handlePostCreateCancel}
+      />
 
-      <EditPost />
+      <EditPost
+        show={!!(isShowPostEditModal && editablePost)}
+        post={editablePost}
+        onEdit={handlePostEdit}
+        onChancel={handlePostEditCancel}
+      />
     </MainLayout>
   );
 };

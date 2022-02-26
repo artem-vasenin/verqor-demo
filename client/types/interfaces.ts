@@ -15,3 +15,13 @@ export interface IComment {
   body: string;
   postId: number;
 }
+
+export interface IPostCreate {
+  title: string;
+  description: string;
+  body: string;
+}
+
+export interface IPostEdit extends IPostCreate {
+  id: number;
+}
