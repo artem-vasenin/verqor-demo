@@ -16,7 +16,7 @@ const CreatePost: FC<IProps> = ({ show, onCreate, onChancel }) => {
   return (
     <div>
       <Modal
-        title="Edit Modal"
+        title="Create new post"
         visible={show}
         onOk={handlePostCreate}
         onCancel={onChancel}

@@ -18,7 +18,7 @@ const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel }) => {
   return post ? (
     <div>
       <Modal
-        title="Edit Modal"
+        title="Edit post"
         visible={show}
         onOk={handlePostEdit}
         onCancel={onChancel}

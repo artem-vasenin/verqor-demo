@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import Head from 'next/head';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { Col, Row, Typography, List, Skeleton, Empty, Button, Tooltip, Modal } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Col, Row, Typography, message, Empty, Button, Tooltip } from 'antd';
 
 import { IPost, IPostCreate, IPostEdit } from '../../types/interfaces';
 import blogService from '../../services/blog.service';
@@ -65,8 +65,13 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
    * Delete selected post
    * @param id - post`s identifier
    */
-  const onPostDelete = (id: number) => {
-    console.log('onPostDelete', id);
+  const onPostDelete = async (id: number) => {
+    try {
+      const post: IPost = await blogService.deletePost(id);
+      message.success(`Post "${post.title}" is deleted`);
+    } catch (e) {
+      message.error('Post is not deleted');
+    }
   }
 
   return (
