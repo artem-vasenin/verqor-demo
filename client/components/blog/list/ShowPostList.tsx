@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
 import { Badge, Button, List, Skeleton, Tag, Tooltip } from 'antd';
-import { CommentOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { CommentOutlined, DeleteOutlined, EditOutlined, ReadOutlined } from '@ant-design/icons';
 
 import classes from '../../../styles/Blog.module.scss';
 import { IPost } from '../../../types/interfaces';
@@ -10,9 +10,10 @@ interface IProps {
   posts: IPost[];
   onEdit: (post: IPost) => void;
   onDelete: (id: number) => void;
+  onDetails: (id: number) => void;
 }
 
-const ShowPostList: FC<IProps> = ({ posts , onEdit, onDelete }) => (
+const ShowPostList: FC<IProps> = ({ posts , onEdit, onDelete, onDetails }) => (
   <List className={classes.list}>
     {
       posts.map((post: IPost) => (
@@ -31,6 +32,15 @@ const ShowPostList: FC<IProps> = ({ posts , onEdit, onDelete }) => (
                 >
                   {post.comments.length}
                 </Tag>
+              </Tooltip>,
+              <Tooltip placement="top" title="Read more" color="gray">
+                <Button
+                  type="default"
+                  shape="circle"
+                  icon={<ReadOutlined />}
+                  size="small"
+                  onClick={() => onDetails(post.id)}
+                />
               </Tooltip>,
               <Tooltip placement="top" title="Edit post" color="blue">
                 <Button

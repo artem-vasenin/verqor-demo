@@ -1,4 +1,4 @@
-import { IPost, IPostCreate, IPostEdit } from '../types/interfaces';
+import { IComment, IPost, IPostCreate, IPostEdit } from '../types/interfaces';
 
 class BlogService {
   private url = `${process.env.NEXT_PUBLIC_API_URL}blog`;
@@ -6,6 +6,15 @@ class BlogService {
   /** Get all posts */
   async getList(): Promise<IPost[]> {
     const response = await fetch(this.url);
+    return response.json();
+  }
+
+  /**
+   * Get post bu ID
+   * @param id - post`s identifier
+   */
+  async getPost(id: number): Promise<IPost> {
+    const response = await fetch(`${this.url}/${id}`);
     return response.json();
   }
 
@@ -18,6 +27,19 @@ class BlogService {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(post),
+    });
+    return response.json();
+  }
+
+  /**
+   * Create new comment
+   * @param comment - comment`s data
+   */
+  async createComment(comment: IComment): Promise<IComment> {
+    const response = await fetch(`${this.url}/comment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(comment),
     });
     return response.json();
   }

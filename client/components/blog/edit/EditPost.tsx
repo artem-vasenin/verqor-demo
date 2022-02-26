@@ -14,9 +14,7 @@ const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel }) => {
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<IPostEdit | null>(null);
   const [formFields, setFormFields] = useState<IFormField[]>([]);
-  const validateMessages = {
-    required: '${label} is required!',
-  };
+  const validateMessages = { required: '${label} is required!' };
 
   /** Selected post values */
   const setInitialValues = (): void => {

@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
 import { Col, Row, Typography, message, Empty, Button, Tooltip } from 'antd';
 
@@ -13,13 +14,14 @@ import ShowPostList from '../../components/blog/list/ShowPostList';
 
 const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
   const { Title } = Typography;
+  const router = useRouter();
   const [postsList, setPostsList] = useState<IPost[]>(posts);
   const [editablePost, setEditablePost] = useState<IPost | null>(null);
   const [isShowPostCreateModal, setIsShowPostCreateModal] = useState(false);
   const [isShowPostEditModal, setIsShowPostEditModal] = useState(false);
 
   /** Show modal form for create new post */
-  const showCreateModalHandler = () => {
+  const showCreateModalHandler = (): void => {
     setIsShowPostCreateModal(true);
   }
 
@@ -27,7 +29,7 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
    * Get data and create new post
    * @param post - post`s data
    */
-  const handlePostCreate = async (post: IPostCreate) => {
+  const handlePostCreate = async (post: IPostCreate): Promise<void> => {
     try {
       const newPost: IPost = await blogService.createPost(post);
       setPostsList([...postsList, newPost]);
@@ -38,7 +40,7 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
   }
 
   /** Cancel create form and close modal */
-  const handlePostCreateCancel = () => {
+  const handlePostCreateCancel = (): void => {
     setIsShowPostCreateModal(false);
   }
 
@@ -46,7 +48,7 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
    * Get data and edit post
    * @param post - post`s data
    */
-  const handlePostEdit = async (post: IPostEdit) => {
+  const handlePostEdit = async (post: IPostEdit): Promise<void> => {
     try {
       const newPost: IPost = await blogService.updatePost(post);
       const updatedPosts = [...postsList].map((item: IPost) => {
@@ -63,13 +65,13 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
    * Get current post and open edit post`s modal
    * @param post - post`s data
    */
-  const showPostEditModalHandler = (post: IPost) => {
+  const showPostEditModalHandler = (post: IPost): void => {
     setEditablePost(post);
     setIsShowPostEditModal(true);
   }
 
   /** Cancel edit form and close modal */
-  const handlePostEditCancel = () => {
+  const handlePostEditCancel = (): void => {
     setEditablePost(null);
     setIsShowPostEditModal(false);
   }
@@ -78,7 +80,7 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
    * Delete selected post
    * @param id - post`s identifier
    */
-  const onPostDelete = async (id: number) => {
+  const onPostDelete = async (id: number): Promise<void> => {
     try {
       const post: IPost = await blogService.deletePost(id);
       setPostsList(postsList.filter((post: IPost) => post.id !== id))
@@ -86,6 +88,14 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
     } catch (e) {
       message.error('Post is not deleted');
     }
+  }
+
+  /**
+   * Go to post`s details
+   * @param id - post`s identifier
+   */
+  const onDetails = async (id: number): Promise<void> => {
+    await router.push(`/blog/${id}`);
   }
 
   return (
@@ -117,6 +127,7 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
                 posts={postsList}
                 onEdit={showPostEditModalHandler}
                 onDelete={onPostDelete}
+                onDetails={onDetails}
               />
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
