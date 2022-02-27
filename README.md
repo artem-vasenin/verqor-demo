@@ -21,6 +21,7 @@ npx prisma db seed
 ```bash
 npm start:dev
 ```
+- Swagger docs: [http://localhost:8000/api/](http://localhost:8000/api/)
 
 ## Client
 ```bash
@@ -36,3 +37,4 @@ yarn install
 ```bash
 npm run dev
 ```
+- Client link [http://localhost:3000/](http://localhost:3000/)
