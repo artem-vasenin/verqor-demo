@@ -1,7 +1,7 @@
 ## verqor-demo
 Verqor demo app
 
-#Server
+##Server
 ```bash
 cd server
 
@@ -22,7 +22,7 @@ npx prisma db seed
 npm start:dev
 ```
 
-#Client
+##Client
 ```bash
 cd client
 
