@@ -8,9 +8,10 @@ interface IProps {
   post: IPost | null;
   onEdit: (post: IPostEdit) => void;
   onChancel: () => void;
+  loading: boolean;
 }
 
-const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel }) => {
+const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel, loading }) => {
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<IPostEdit | null>(null);
   const [formFields, setFormFields] = useState<IFormField[]>([]);
@@ -95,7 +96,12 @@ const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel }) => {
             <Input.TextArea />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              loading={loading}
+            >
               Submit
             </Button>
           </Form.Item>

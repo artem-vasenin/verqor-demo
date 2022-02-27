@@ -16,6 +16,7 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
   const { Title } = Typography;
   const router = useRouter();
   const [postsList, setPostsList] = useState<IPost[]>(posts);
+  const [loading, setLoading] = useState(false);
   const [editablePost, setEditablePost] = useState<IPost | null>(null);
   const [isShowPostCreateModal, setIsShowPostCreateModal] = useState(false);
   const [isShowPostEditModal, setIsShowPostEditModal] = useState(false);
@@ -32,10 +33,10 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
   const handlePostCreate = async (post: IPostCreate): Promise<void> => {
     try {
       const newPost: IPost = await blogService.createPost(post);
-      setPostsList([...postsList, newPost]);
+      setPostsList([newPost, ...postsList]);
       message.success(`Post "${newPost.title}" is created`);
-    } catch (e) {
-      message.error('Post is not created');
+    } catch (e: any) {
+      message.error(e);
     }
   }
 
@@ -56,8 +57,8 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
       })
       setPostsList(updatedPosts);
       message.success(`Post "${newPost.title}" is updated`);
-    } catch (e) {
-      message.error('Post is not updated');
+    } catch (e: any) {
+      message.error(e);
     }
   }
 
@@ -85,8 +86,8 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
       const post: IPost = await blogService.deletePost(id);
       setPostsList(postsList.filter((post: IPost) => post.id !== id))
       message.success(`Post "${post.title}" is deleted`);
-    } catch (e) {
-      message.error('Post is not deleted');
+    } catch (e: any) {
+      message.error(e);
     }
   }
 
@@ -140,6 +141,7 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
         show={isShowPostCreateModal}
         onCreate={handlePostCreate}
         onChancel={handlePostCreateCancel}
+        loading={loading}
       />
 
       <EditPost
@@ -147,6 +149,7 @@ const Blog: FC<{ posts: IPost[] }> = ({ posts }) => {
         post={editablePost}
         onEdit={handlePostEdit}
         onChancel={handlePostEditCancel}
+        loading={loading}
       />
     </MainLayout>
   );

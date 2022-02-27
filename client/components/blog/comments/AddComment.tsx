@@ -6,9 +6,10 @@ import { IComment } from '../../../types/interfaces';
 interface IProps {
   onSubmit: (comment: IComment) => void;
   postId: number;
+  loading: boolean;
 }
 
-const AddComment: FC<IProps> = ({onSubmit, postId}) => {
+const AddComment: FC<IProps> = ({onSubmit, postId, loading }) => {
   const [form] = Form.useForm();
   const [formValues, setFormValues] = useState<IComment | null>(null);
   const validateMessages = { required: '${label} is required!' };
@@ -59,7 +60,12 @@ const AddComment: FC<IProps> = ({onSubmit, postId}) => {
         <Input.TextArea />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+          loading={loading}
+        >
           Submit
         </Button>
       </Form.Item>

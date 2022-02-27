@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import Head from 'next/head';
-import { Card, Col, Empty, message, Row } from 'antd';
+import { Card, Col, Empty, message, Row, Typography, Divider } from 'antd';
 import {GetServerSideProps} from "next";
 
 import MainLayout from '../../components/layouts/MainLayout';
@@ -8,21 +8,29 @@ import blogService from '../../services/blog.service';
 import { IComment, IPost } from '../../types/interfaces';
 import classes from '../../styles/Post.module.scss';
 import AddComment from '../../components/blog/comments/AddComment';
+import CommentsList from '../../components/blog/comments/CommentsList';
 
 interface IProps {
   post: IPost | null;
 }
 
 const Post: FC<IProps> = ({ post }) => {
-  const [comments, setComments] = useState<IComment[]>(post?.comments ?? []);
+  const { Title } = Typography;
+  const [comments, setComments] = useState<IComment[]>(post?.comments || []);
+  const [loading, setLoading] = useState(false);
 
   const handleCommentCreate = async (comment: IComment) => {
+    setLoading(true);
     try {
       const newComment = await blogService.createComment(comment);
-      setComments([...comments, newComment]);
+      console.log('handleCommentCreate', newComment);
+      setComments((prev) => [newComment, ...prev]);
       message.success('New comment has been created');
-    } catch (e) {
-      message.error('Comment is not created');
+    } catch (e: any) {
+      console.log('handleCommentCreate', e);
+      message.error(e);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -34,8 +42,14 @@ const Post: FC<IProps> = ({ post }) => {
 
       <Row>
         <Col span={24} className={classes.post}>
+          <Typography>
+            <div className={classes.heading}>
+              <Title level={1}>{post.title}</Title>
+            </div>
+          </Typography>
+
           <Card
-            title={post.title}
+            title={null}
             bordered={false}
             className={classes.post__card}
           >
@@ -52,7 +66,14 @@ const Post: FC<IProps> = ({ post }) => {
             <AddComment
               postId={post.id}
               onSubmit={handleCommentCreate}
+              loading={loading}
             />
+            {comments.length ? (
+              <>
+                <Divider />
+                <CommentsList comments={comments} />
+              </>
+            ) : null}
           </Card>
         </Col>
       </Row>

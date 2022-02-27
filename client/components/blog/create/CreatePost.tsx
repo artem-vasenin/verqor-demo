@@ -7,9 +7,10 @@ interface IProps {
   show: boolean;
   onCreate: (post: IPostCreate) => void;
   onChancel: () => void;
+  loading: boolean;
 }
 
-const CreatePost: FC<IProps> = ({ show, onCreate, onChancel }) => {
+const CreatePost: FC<IProps> = ({ show, onCreate, onChancel, loading }) => {
   const [formValues, setFormValues] = useState<IPostCreate | null>(null);
   const [form] = Form.useForm();
   const validateMessages = { required: '${label} is required!' };
@@ -75,7 +76,12 @@ const CreatePost: FC<IProps> = ({ show, onCreate, onChancel }) => {
             <Input.TextArea />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              loading={loading}
+            >
               Submit
             </Button>
           </Form.Item>
