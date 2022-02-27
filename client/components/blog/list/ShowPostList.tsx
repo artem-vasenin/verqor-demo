@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
+import parse from 'html-react-parser';
 import { Badge, Button, List, Skeleton, Tag, Tooltip } from 'antd';
 import { CommentOutlined, DeleteOutlined, EditOutlined, ReadOutlined } from '@ant-design/icons';
 
@@ -90,7 +91,7 @@ const ShowPostList: FC<IProps> = ({ posts , onEdit, onDelete, onDetails }) => {
                       <a>{post.title}</a>
                     </Link>
                   }
-                  description={post.description}
+                  description={parse(post.description)}
                   className={classes.list__meta}
                 />
               </Skeleton>

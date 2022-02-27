@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import Head from 'next/head';
+import parse from 'html-react-parser';
 import { Card, Col, Empty, message, Row, Typography, Divider } from 'antd';
 import {GetServerSideProps} from "next";
 
@@ -53,7 +54,7 @@ const Post: FC<IProps> = ({ post }) => {
             bordered={false}
             className={classes.post__card}
           >
-            {post.body}
+            {parse(post.body)}
           </Card>
         </Col>
 

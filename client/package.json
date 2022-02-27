@@ -11,6 +11,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "antd": "^4.18.8",
+    "html-react-parser": "^1.4.8",
     "next": "12.1.0",
     "nextjs-progressbar": "^0.0.13",
     "react": "17.0.2",

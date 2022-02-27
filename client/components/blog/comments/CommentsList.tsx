@@ -1,5 +1,6 @@
 import { Avatar, List } from 'antd';
 import { FC } from 'react';
+import parse from 'html-react-parser';
 
 import { IComment } from '../../../types/interfaces';
 import classes from '../../../styles/CommentsList.module.scss';
@@ -19,7 +20,7 @@ const CommentsList: FC<IProps> = ({ comments }) => {
           <List.Item.Meta
             avatar={<Avatar src={`https://joeschmoe.io/api/v1/${item.id}`} />}
             title={item.name}
-            description={item.body}
+            description={parse(item.body)}
           />
         </List.Item>
       )}

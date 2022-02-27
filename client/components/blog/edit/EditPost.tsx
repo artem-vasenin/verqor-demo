@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Button, Form, Input, Modal } from 'antd';
 
 import { IFormField, IPost, IPostEdit } from '../../../types/interfaces';
@@ -79,7 +79,7 @@ const EditPost: FC<IProps> = ({ show, post, onEdit, onChancel, loading }) => {
             label="Title"
             rules={[{ required: true, message: 'Please input title!' }]}
           >
-            <Input />
+            <Input disabled />
           </Form.Item>
           <Form.Item
             name={['description']}
